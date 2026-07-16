@@ -1,0 +1,1 @@
+# Deklinasi-dan-Equation-Of-Time-Matahari-v.2
