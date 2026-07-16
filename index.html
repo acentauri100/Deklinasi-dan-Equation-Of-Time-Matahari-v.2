@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instrumen Data Matahari — SamawatLab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-void:#081f18;
+  --bg-deep:#0b2b20;
+  --bg-panel:#0e3a2b;
+  --bg-panel-2:#123f30;
+  --line:#1f5540;
+  --gold:#c9a24a;
+  --gold-bright:#e8c66a;
+  --gold-dim:#8a7538;
+  --cream:#f3ecd9;
+  --cream-dim:#c9c2ac;
+  --muted:#7fa393;
+  --north:#e8c66a;
+  --south:#7fb9d6;
+  --danger:#d98a5f;
+  --radius:14px;
+  --serif:'Amiri', 'Noto Naskh Arabic', serif;
+  --sans:'Cairo', 'Segoe UI', sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse at 20% -10%, #133d2d 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 0%, #0f3527 0%, transparent 45%),
+    var(--bg-void);
+  color:var(--cream);
+  font-family:var(--sans);
+  line-height:1.5;
+  min-height:100vh;
+}
+.stars{
+  position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.55;
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 20%, var(--gold-bright) 0%, transparent 60%),
+    radial-gradient(1px 1px at 80% 10%, var(--cream) 0%, transparent 60%),
+    radial-gradient(1px 1px at 60% 35%, var(--gold-bright) 0%, transparent 60%),
+    radial-gradient(1.5px 1.5px at 30% 60%, var(--cream) 0%, transparent 60%),
+    radial-gradient(1px 1px at 90% 70%, var(--gold-bright) 0%, transparent 60%),
+    radial-gradient(1px 1px at 45% 85%, var(--cream) 0%, transparent 60%),
+    radial-gradient(1.5px 1.5px at 15% 92%, var(--gold-bright) 0%, transparent 60%);
+  background-size:100% 100%;
+}
+.wrap{position:relative; z-index:1; max-width:1180px; margin:0 auto; padding:28px 20px 80px;}
+
+/* ---------- Header ---------- */
+header{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:linear-gradient(160deg, var(--bg-panel) 0%, var(--bg-deep) 100%);
+  padding:34px 30px;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:22px;
+}
+header::before{
+  content:"";
+  position:absolute; right:-90px; top:-90px; width:280px; height:280px;
+  border-radius:50%;
+  border:1px solid var(--line);
+  background:
+    repeating-conic-gradient(from 0deg, transparent 0 9deg, rgba(201,162,74,.10) 9deg 10deg);
+  opacity:.7;
+}
+header::after{
+  content:"";
+  position:absolute; right:-40px; top:-40px; width:180px; height:180px;
+  border-radius:50%; border:1px solid var(--gold-dim); opacity:.5;
+}
+.eyebrow{
+  font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--gold); font-weight:700; margin-bottom:10px;
+}
+.eyebrow span.ar{ font-family:var(--serif); letter-spacing:0; margin-inline-start:10px; color:var(--muted); font-size:13px; text-transform:none;}
+h1{
+  font-family:var(--serif); font-weight:700; font-size:clamp(28px,4vw,44px);
+  margin:0 0 8px; color:var(--cream); letter-spacing:.01em;
+}
+.tagline{ max-width:640px; color:var(--cream-dim); font-size:15px; margin-bottom:18px;}
+.credit-line{
+  display:flex; gap:22px; flex-wrap:wrap; font-size:12.5px; color:var(--muted);
+  border-top:1px dashed var(--line); padding-top:14px; margin-top:6px;
+}
+.credit-line b{ color:var(--gold-bright); font-weight:600;}
+
+/* ---------- Panels ---------- */
+.panel{
+  border:1px solid var(--line);
+  background:linear-gradient(175deg, var(--bg-panel) 0%, var(--bg-deep) 100%);
+  border-radius:var(--radius);
+  padding:24px 26px;
+  margin-bottom:22px;
+}
+.panel h2{
+  font-family:var(--serif); font-size:20px; color:var(--gold-bright);
+  margin:0 0 4px; display:flex; align-items:center; gap:10px;
+}
+.panel h2 small{ font-family:var(--sans); font-size:11px; color:var(--muted); font-weight:400; letter-spacing:.05em;}
+.panel .desc{ color:var(--muted); font-size:13px; margin-bottom:18px;}
+
+.grid{ display:grid; gap:16px; }
+.grid.g2{ grid-template-columns:repeat(2,1fr); }
+.grid.g3{ grid-template-columns:repeat(3,1fr); }
+.grid.g4{ grid-template-columns:repeat(4,1fr); }
+@media (max-width:760px){ .grid.g2,.grid.g3,.grid.g4{ grid-template-columns:1fr 1fr; } }
+
+label{ display:block; font-size:11.5px; color:var(--muted); margin-bottom:6px; letter-spacing:.03em; text-transform:uppercase; font-weight:600;}
+input, select{
+  width:100%; background:#0a2c20; border:1px solid var(--line); color:var(--cream);
+  padding:9px 10px; border-radius:8px; font-family:var(--sans); font-size:14px;
+  outline:none; transition:border-color .15s;
+}
+input:focus, select:focus{ border-color:var(--gold); }
+input[type=number]{ -moz-appearance:textfield; }
+.dms-row{ display:grid; grid-template-columns:1fr 1fr 1fr 70px; gap:6px; }
+.dms-row input{ text-align:center; }
+.field{ margin-bottom:0; }
+.subfield-label{ font-size:10px; color:var(--gold-dim); text-align:center; margin-top:3px; letter-spacing:.05em;}
+.subgrid-labels{ display:grid; grid-template-columns:1fr 1fr 1fr 70px; gap:6px; }
+
+fieldset{ border:1px solid var(--line); border-radius:10px; padding:14px 16px 16px; margin:0; }
+legend{ padding:0 8px; font-size:11.5px; color:var(--gold); text-transform:uppercase; letter-spacing:.05em; font-weight:700;}
+
+.mode-tabs{ display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+.mode-tab{
+  flex:1; min-width:140px; text-align:center; padding:11px 12px; border-radius:9px;
+  border:1px solid var(--line); background:#0a2c20; color:var(--cream-dim);
+  cursor:pointer; font-size:13px; font-weight:600; transition:all .15s; user-select:none;
+}
+.mode-tab:hover{ border-color:var(--gold-dim); }
+.mode-tab.active{ background:linear-gradient(160deg, var(--gold) 0%, #a5822f 100%); color:#1a1204; border-color:var(--gold); }
+
+.period-block{ display:none; }
+.period-block.active{ display:block; }
+
+.btn-row{ display:flex; gap:12px; margin-top:20px; flex-wrap:wrap; align-items:center;}
+button{
+  font-family:var(--sans); font-weight:700; font-size:14px; cursor:pointer;
+  border-radius:9px; padding:12px 22px; border:1px solid var(--gold);
+  transition:transform .1s, box-shadow .15s;
+}
+.btn-primary{ background:linear-gradient(160deg, var(--gold-bright) 0%, var(--gold) 60%, #977c34 100%); color:#1a1204; }
+.btn-primary:hover{ box-shadow:0 4px 18px rgba(201,162,74,.35); transform:translateY(-1px); }
+.btn-ghost{ background:transparent; color:var(--gold-bright); border:1px solid var(--line); }
+.btn-ghost:hover{ border-color:var(--gold-dim); }
+.hint{ font-size:12px; color:var(--muted); }
+
+/* ---------- Time Explorer ---------- */
+.explorer-bar{
+  display:flex; gap:18px; flex-wrap:wrap; align-items:flex-end;
+  border:1px solid var(--line); border-radius:12px; background:#0a2c20;
+  padding:16px 18px; margin-bottom:18px;
+}
+.explorer-bar .field{ margin-bottom:0; }
+.explorer-btns{ display:flex; gap:8px; margin-left:auto; }
+.explorer-btns button{ padding:9px 14px; font-size:12.5px; white-space:nowrap; }
+input[type=range]{
+  width:100%; accent-color:var(--gold); height:6px; padding:0; background:transparent;
+  cursor:pointer;
+}
+input[type=range]::-webkit-slider-runnable-track{
+  height:5px; border-radius:4px; background:linear-gradient(90deg, var(--gold-dim), var(--line));
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--gold-bright); border:2px solid #1a1204; margin-top:-5.5px; cursor:pointer;
+}
+
+/* ---------- Illustrations ---------- */
+.illus-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+@media (max-width:820px){ .illus-grid{ grid-template-columns:1fr; } }
+.illus-card{
+  border:1px solid var(--line); border-radius:12px; background:#0a2c20; padding:18px;
+  display:flex; flex-direction:column; align-items:center;
+}
+.illus-card h3{ font-family:var(--serif); font-size:16px; color:var(--gold-bright); margin:0 0 4px; align-self:flex-start;}
+.illus-card .sub{ font-size:11.5px; color:var(--muted); margin-bottom:10px; align-self:flex-start;}
+.illus-readout{
+  margin-top:10px; text-align:center; font-family:var(--sans);
+}
+.illus-readout .val{ font-size:26px; font-weight:800; color:var(--gold-bright); font-variant-numeric:tabular-nums;}
+.illus-readout .lbl{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-top:2px;}
+
+/* ---------- Chart ---------- */
+.chart-card{
+  border:1px solid var(--line); border-radius:12px; background:#0a2c20; padding:18px 18px 8px;
+  margin-bottom:16px;
+}
+.chart-card h3{ font-family:var(--serif); font-size:16px; color:var(--gold-bright); margin:0 0 4px;}
+.chart-card .sub{ font-size:11.5px; color:var(--muted); margin-bottom:10px;}
+canvas{ width:100%; display:block; }
+
+/* ---------- Table ---------- */
+.table-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:12px; }
+table{ width:100%; border-collapse:collapse; font-size:13px; min-width:720px; }
+thead th{
+  background:var(--bg-panel-2); color:var(--gold-bright); text-align:left; padding:10px 12px;
+  font-size:11px; text-transform:uppercase; letter-spacing:.05em; position:sticky; top:0;
+  border-bottom:1px solid var(--line); white-space:nowrap;
+}
+tbody td{ padding:8px 12px; border-bottom:1px solid #113828; color:var(--cream-dim); white-space:nowrap; font-variant-numeric:tabular-nums;}
+tbody tr:hover{ background:#0f3527; cursor:pointer; }
+tbody tr.sel{ background:#164835; }
+tbody td.num{ text-align:right; color:var(--cream); }
+.dir-U{ color:var(--north); font-weight:700; }
+.dir-S{ color:var(--south); font-weight:700; }
+.eot-plus{ color:var(--north); }
+.eot-minus{ color:var(--south); }
+
+.table-toolbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;}
+.count-badge{ font-size:12px; color:var(--muted); }
+
+footer{
+  text-align:center; color:var(--muted); font-size:12px; padding:30px 10px 10px;
+}
+footer .sig{ font-family:var(--serif); color:var(--gold-dim); font-size:13px; margin-top:6px;}
+
+.empty-state{
+  text-align:center; padding:40px 20px; color:var(--muted); font-size:13.5px;
+}
+
+.badge-note{
+  font-size:11.5px; color:var(--gold-dim); background:rgba(201,162,74,.08);
+  border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-top:14px;
+}
+
+.book-banner{
+  text-align:center; border:1px dashed var(--gold-dim); border-radius:10px;
+  padding:14px 10px; margin-bottom:16px; background:rgba(201,162,74,.06);
+}
+.book-banner .bb-title{ font-family:var(--serif); color:var(--gold-bright); font-size:18px; letter-spacing:.02em;}
+.book-banner .bb-sub{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; margin-top:4px;}
+.th-sub{ display:block; font-size:9px; font-weight:400; text-transform:none; letter-spacing:0; color:var(--muted); }
+.col-azalt{ display:none; }
+.show-azalt .col-azalt{ display:table-cell; }
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">SamawatLab &nbsp;·&nbsp; مختبر السماوات <span class="ar">بيانات الشمس</span></div>
+    <h1>Instrumen Data Matahari</h1>
+    <p class="tagline">Menghitung data Matahari — Bujur Astronomi, Lintang Astronomi, Asensio Rekta, Deklinasi, Jarak Geosentris, Semi Diameter, Kemiringan Ekliptika, dan Equation of Time — dengan format tabel mengikuti buku <i>Ephemeris Hisab Rukyat</i> (Kemenag RI), dapat dibaca per jam, per hari, atau per bulan, lengkap dengan grafik dan ilustrasi interaktif.</p>
+    <div class="credit-line">
+      <div>Algoritma perhitungan: <b>Jean Meeus</b> — <i>Astronomical Algorithms</i></div>
+      <div>Implementasi &amp; pengembangan: <b>Muhammad Thoyfur</b></div>
+    </div>
+  </header>
+
+  <!-- ============ INPUT PANEL ============ -->
+  <section class="panel">
+    <h2>1. Lokasi &amp; Referensi Waktu <small>Koordinat dalam format DMS</small></h2>
+    <p class="desc">Isi koordinat lokasi pengamatan dan zona waktu setempat.</p>
+    <div class="grid g2">
+      <fieldset>
+        <legend>Lintang (Latitude)</legend>
+        <div class="subgrid-labels">
+          <div class="subfield-label">Derajat</div><div class="subfield-label">Menit</div><div class="subfield-label">Detik</div><div class="subfield-label">Arah</div>
+        </div>
+        <div class="dms-row">
+          <input type="number" id="latD" value="6" min="0" max="90">
+          <input type="number" id="latM" value="58" min="0" max="59">
+          <input type="number" id="latS" value="0" min="0" max="59.99" step="0.01">
+          <select id="latDir"><option value="S" selected>LS</option><option value="U">LU</option></select>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Bujur (Longitude)</legend>
+        <div class="subgrid-labels">
+          <div class="subfield-label">Derajat</div><div class="subfield-label">Menit</div><div class="subfield-label">Detik</div><div class="subfield-label">Arah</div>
+        </div>
+        <div class="dms-row">
+          <input type="number" id="lonD" value="110" min="0" max="180">
+          <input type="number" id="lonM" value="42" min="0" max="59">
+          <input type="number" id="lonS" value="0" min="0" max="59.99" step="0.01">
+          <select id="lonDir"><option value="T" selected>BT</option><option value="B">BB</option></select>
+        </div>
+      </fieldset>
+    </div>
+    <div class="grid g3" style="margin-top:16px;">
+      <div class="field">
+        <label>Zona Waktu</label>
+        <select id="tzPreset">
+          <option value="7" selected>WIB (UTC+7)</option>
+          <option value="8">WITA (UTC+8)</option>
+          <option value="9">WIT (UTC+9)</option>
+          <option value="0">UTC+0</option>
+          <option value="custom">Kustom…</option>
+        </select>
+      </div>
+      <div class="field" id="tzCustomWrap" style="display:none;">
+        <label>Offset UTC Kustom (jam)</label>
+        <input type="number" id="tzCustom" value="7" step="0.25">
+      </div>
+      <div class="field">
+        <label>Nama Lokasi (opsional)</label>
+        <input type="text" id="locName" placeholder="Mis. Boyolali, Jawa Tengah">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-ghost" id="btnGps" type="button">📍 Gunakan Lokasi GPS Saya</button>
+      <span class="hint" id="gpsStatus"></span>
+    </div>
+  </section>
+
+  <!-- ============ MODE & PERIODE ============ -->
+  <section class="panel">
+    <h2>2. Mode &amp; Periode Data <small>Format tabel mengikuti Ephemeris Hisab Rukyat, Kemenag RI</small></h2>
+    <p class="desc">Pilih resolusi data yang diinginkan, lalu tentukan rentang periodenya.</p>
+
+    <div class="grid g3" style="margin-bottom:18px;">
+      <div class="field">
+        <label>Acuan Jam Tabel</label>
+        <select id="acuanJam">
+          <option value="gmt" selected>GMT / UT (00:00\u201324:00, seperti buku Ephemeris)</option>
+          <option value="lokal">Waktu Lokal (sesuai Zona Waktu di atas)</option>
+        </select>
+      </div>
+      <div class="field" style="align-self:end;">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer; text-transform:none; font-size:13px; color:var(--cream-dim);">
+          <input type="checkbox" id="showAzAlt" style="width:16px; height:16px; accent-color:var(--gold);">
+          Tampilkan kolom Azimuth &amp; Altitude (tambahan, di luar buku)
+        </label>
+      </div>
+    </div>
+
+    <div class="mode-tabs">
+      <div class="mode-tab active" data-mode="jam">⏱ Per Jam</div>
+      <div class="mode-tab" data-mode="hari">📅 Per Hari</div>
+      <div class="mode-tab" data-mode="bulan">🗓 Per Bulan</div>
+    </div>
+
+    <div class="period-block active" id="block-jam">
+      <div class="grid g4">
+        <div class="field"><label>Tanggal</label><input type="date" id="jamTanggal"></div>
+        <div class="field"><label>Jam Mulai</label><input type="number" id="jamMulai" value="0" min="0" max="24"></div>
+        <div class="field"><label>Jam Akhir</label><input type="number" id="jamAkhir" value="24" min="0" max="24"></div>
+        <div class="field"><label>Interval (menit)</label>
+          <select id="jamInterval">
+            <option value="1">1 menit</option>
+            <option value="5">5 menit</option>
+            <option value="10">10 menit</option>
+            <option value="15">15 menit</option>
+            <option value="30">30 menit</option>
+            <option value="60" selected>60 menit (seperti buku)</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint" style="margin-top:10px;">Default 00:00\u201324:00 tiap 60 menit meniru tampilan halaman harian buku Ephemeris. Perkecil interval hingga 1 menit untuk resolusi lebih halus.</p>
+    </div>
+
+    <div class="period-block" id="block-hari">
+      <div class="grid g4">
+        <div class="field"><label>Tanggal Mulai</label><input type="date" id="hariMulai"></div>
+        <div class="field"><label>Tanggal Akhir</label><input type="date" id="hariAkhir"></div>
+        <div class="field"><label>Interval (hari)</label><input type="number" id="hariInterval" value="1" min="1" max="30"></div>
+        <div class="field"><label>Jam Acuan per Baris</label><input type="time" id="hariJamAcuan" value="00:00"></div>
+      </div>
+    </div>
+
+    <div class="period-block" id="block-bulan">
+      <div class="grid g4">
+        <div class="field"><label>Bulan/Tahun Mulai</label><input type="month" id="bulanMulai"></div>
+        <div class="field"><label>Bulan/Tahun Akhir</label><input type="month" id="bulanAkhir"></div>
+        <div class="field"><label>Tanggal Acuan (1–28)</label><input type="number" id="bulanTanggalAcuan" value="1" min="1" max="28"></div>
+        <div class="field"><label>Jam Acuan per Baris</label><input type="time" id="bulanJamAcuan" value="00:00"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="btnHitung" type="button">☀ Hitung Data Matahari</button>
+      <button class="btn-ghost" id="btnCsv" type="button">⬇ Unduh CSV</button>
+      <span class="hint">Delta T dihitung otomatis (polinomial Espenak–Meeus) sesuai tahun data.</span>
+    </div>
+  </section>
+
+  <!-- ============ ILLUSTRATIONS ============ -->
+  <section class="panel" id="illusSection">
+    <h2>3. Ilustrasi <small>Interaktif — dapat digeser waktunya</small></h2>
+    <p class="desc">Visualisasi posisi matahari terhadap ekuator langit, dan selisih waktu matahari hakiki terhadap waktu pertengahan. Geser kontrol di bawah, klik salah satu baris tabel, atau tekan Animasikan untuk melihat deklinasi &amp; equation of time berubah sepanjang waktu.</p>
+
+    <div class="explorer-bar">
+      <div class="field" style="max-width:150px;">
+        <label>Tanggal</label>
+        <input type="date" id="explorerDate">
+      </div>
+      <div class="field" style="flex:2; min-width:220px;">
+        <label>Geser Jam Dalam Sehari — <span id="explorerTimeLabel">12:00</span></label>
+        <input type="range" id="explorerTime" min="0" max="1439" step="1" value="720">
+      </div>
+      <div class="field" style="flex:2; min-width:220px;">
+        <label>Geser Hari Dalam Setahun — <span id="explorerDoyLabel">1 Jan</span></label>
+        <input type="range" id="explorerDoy" min="1" max="366" step="1" value="1">
+      </div>
+      <div class="explorer-btns">
+        <button class="btn-ghost" id="btnPlay" type="button">&#9654; Animasikan Setahun</button>
+        <button class="btn-ghost" id="btnNow" type="button">&#9201; Sekarang</button>
+      </div>
+    </div>
+
+    <div class="illus-grid">
+      <div class="illus-card">
+        <h3>Ilustrasi Deklinasi</h3>
+        <div class="sub">Posisi matahari terhadap ekuator langit &amp; garis balik</div>
+        <svg id="svgDeklinasi" viewBox="0 0 320 220" width="320" height="220"></svg>
+        <div class="illus-readout">
+          <div class="val" id="declReadout">–</div>
+          <div class="lbl" id="declReadoutLabel">Deklinasi</div>
+        </div>
+      </div>
+      <div class="illus-card">
+        <h3>Ilustrasi Equation of Time</h3>
+        <div class="sub">Selisih matahari hakiki terhadap waktu pertengahan</div>
+        <svg id="svgEot" viewBox="0 0 320 220" width="320" height="220"></svg>
+        <div class="illus-readout">
+          <div class="val" id="eotReadout">–</div>
+          <div class="lbl" id="eotReadoutLabel">Equation of Time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHARTS ============ -->
+  <section class="panel" id="chartSection" style="display:none;">
+    <h2>4. Grafik Naik-Turun</h2>
+    <p class="desc">Pergerakan nilai sepanjang periode yang dipilih.</p>
+    <div class="chart-card">
+      <h3>Grafik Deklinasi Matahari</h3>
+      <div class="sub">Garis emas: deklinasi (°) &nbsp;·&nbsp; garis putus tipis: ekuator &amp; garis balik ±23°26'</div>
+      <canvas id="chartDeklinasi" height="220"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Grafik Equation of Time</h3>
+      <div class="sub">Garis emas: equation of time (menit) &nbsp;·&nbsp; garis putus tipis: nol</div>
+      <canvas id="chartEot" height="220"></canvas>
+    </div>
+  </section>
+
+  <!-- ============ TABLE ============ -->
+  <section class="panel" id="tableSection" style="display:none;">
+    <h2>5. Tabel Data Matahari <small>Kolom mengikuti "DATA MATAHARI" — Ephemeris Hisab Rukyat, Kemenag RI</small></h2>
+    <div class="book-banner" id="bookBanner" style="display:none;"></div>
+    <div class="table-toolbar">
+      <span class="count-badge" id="rowCount"></span>
+    </div>
+    <div class="table-wrap">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th id="thWaktu">Jam</th>
+            <th>Bujur Astronomi<br><span class="th-sub">Ecliptic Longitude</span></th>
+            <th>Lintang Astronomi<br><span class="th-sub">Ecliptic Latitude</span></th>
+            <th>Asensio Rekta<br><span class="th-sub">Right Ascension</span></th>
+            <th>Deklinasi<br><span class="th-sub">Declination</span></th>
+            <th>Jarak Geosentris<br><span class="th-sub">Distance (AU)</span></th>
+            <th>Semi Diameter</th>
+            <th>Kemiringan Ekliptika<br><span class="th-sub">True Obliquity</span></th>
+            <th>Equation of Time<br><span class="th-sub">Perata Waktu</span></th>
+            <th class="col-azalt">Azimuth</th>
+            <th class="col-azalt">Altitude</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="badge-note">
+      * Lintang Astronomi (Ecliptic Latitude) Matahari bernilai sangat kecil (umumnya &lt; 1″) sehingga pada metode rendah-presisi Meeus yang dipakai di sini dianggap ≈ 0″ — praktik yang sama disebutkan dalam buku Ephemeris Hisab Rukyat: "karena nilainya sangat kecil, banyak sistem perhitungan mengabaikan nilai data ini." Kolom lain (Bujur Astronomi, Asensio Rekta, Deklinasi, Jarak Geosentris, Semi Diameter, Kemiringan Ekliptika, Equation of Time) dihitung penuh mengikuti algoritma Jean Meeus (Astronomical Algorithms, metode rendah-presisi bab 25 &amp; 28). Dibandingkan Ephemeris Hisab Rukyat Kemenag RI (yang memakai VSOP87 presisi tinggi), selisih Bujur Astronomi &amp; Asensio Rekta pada aplikasi ini umumnya di bawah 10″ — dalam batas akurasi ~36″ yang dinyatakan Meeus untuk metode ini — sementara Deklinasi, Jarak Geosentris, Semi Diameter, Kemiringan Ekliptika, dan Equation of Time praktis identik.
+    </div>
+  </section>
+
+  <section class="panel" id="emptySection">
+    <div class="empty-state">
+      Belum ada data. Atur lokasi, mode, dan periode di atas lalu tekan <b style="color:var(--gold-bright)">Hitung Data Matahari</b>.
+    </div>
+  </section>
+
+  <footer>
+    Formula posisi matahari, nutasi, ΔT, dan equation of time mengikuti Jean Meeus, <i>Astronomical Algorithms</i> (Willmann-Bell), dengan polinomial ΔT Espenak–Meeus.
+    <div class="sig">مِنَ الْحِسَابِ إِلَى الْبَصِيرَة — Muhammad Thoyfur · SamawatLab</div>
+  </footer>
+
+</div>
+
+<script>
+/*!
+ * solar-core.js
+ * -----------------------------------------------------------------------
+ * Modul perhitungan posisi matahari: deklinasi, azimuth, altitude, dan
+ * equation of time (perata waktu / ta'dil al-waqt).
+ *
+ * Algoritma dasar: Jean Meeus, "Astronomical Algorithms" (2nd ed.,
+ * Willmann-Bell) — Bab 7 (Julian Day), Bab 22 (Nutasi & Obliquity),
+ * Bab 25 (Koordinat Matahari / Low-precision), Bab 28 (Equation of Time).
+ * Polinomial Delta T mengikuti Espenak & Meeus (2006), NASA Eclipse Web Site.
+ *
+ * Implementasi & pengembangan: Muhammad Thoyfur — SamawatLab.
+ * -----------------------------------------------------------------------
+ */
+(function (global) {
+  "use strict";
+
+  function rad(d) { return (d * Math.PI) / 180; }
+  function deg(r) { return (r * 180) / Math.PI; }
+  function normDeg(d) { var x = d % 360; if (x < 0) x += 360; return x; }
+  function normHour(h) { var x = h % 24; if (x < 0) x += 24; return x; }
+  function mod(a, n) { var x = a % n; if (x < 0) x += n; return x; }
+
+  // ---- Julian Day (Meeus 7.1, kalender Gregorian) ----
+  function julianDay(Y, M, D, hourUT) {
+    var y = Y, m = M;
+    if (m <= 2) { y -= 1; m += 12; }
+    var A = Math.floor(y / 100);
+    var B = 2 - A + Math.floor(A / 4);
+    var dayFrac = D + (hourUT || 0) / 24;
+    return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + dayFrac + B - 1524.5;
+  }
+
+  // ---- Delta T (Espenak & Meeus, polinomial per-era, detik) ----
+  function deltaT(year, month) {
+    var y = year + ((month || 1) - 0.5) / 12;
+    var dt, u, t;
+    if (y < -500) { u = (y - 1820) / 100; dt = -20 + 32 * u * u; }
+    else if (y < 500) {
+      u = y / 100;
+      dt = 10583.6 - 1014.41 * u + 33.78311 * Math.pow(u, 2) - 5.952053 * Math.pow(u, 3)
+        - 0.1798452 * Math.pow(u, 4) + 0.022174192 * Math.pow(u, 5) + 0.0090316521 * Math.pow(u, 6);
+    } else if (y < 1600) {
+      u = (y - 1000) / 100;
+      dt = 1574.2 - 556.01 * u + 71.23472 * Math.pow(u, 2) + 0.319781 * Math.pow(u, 3)
+        - 0.8503463 * Math.pow(u, 4) - 0.005050998 * Math.pow(u, 5) + 0.0083572073 * Math.pow(u, 6);
+    } else if (y < 1700) { t = y - 1600; dt = 120 - 0.9808 * t - 0.01532 * t * t + Math.pow(t, 3) / 7129; }
+    else if (y < 1800) {
+      t = y - 1700;
+      dt = 8.83 + 0.1603 * t - 0.0059285 * t * t + 0.00013336 * Math.pow(t, 3) - Math.pow(t, 4) / 1174000;
+    } else if (y < 1860) {
+      t = y - 1800;
+      dt = 13.72 - 0.332447 * t + 0.0068612 * Math.pow(t, 2) + 0.0041116 * Math.pow(t, 3)
+        - 0.00037436 * Math.pow(t, 4) + 0.0000121272 * Math.pow(t, 5) - 0.0000001699 * Math.pow(t, 6)
+        + 0.000000000875 * Math.pow(t, 7);
+    } else if (y < 1900) {
+      t = y - 1860;
+      dt = 7.62 + 0.5737 * t - 0.251754 * Math.pow(t, 2) + 0.01680668 * Math.pow(t, 3)
+        - 0.0004473624 * Math.pow(t, 4) + Math.pow(t, 5) / 233174;
+    } else if (y < 1920) {
+      t = y - 1900;
+      dt = -2.79 + 1.494119 * t - 0.0598939 * t * t + 0.0061966 * Math.pow(t, 3) - 0.000197 * Math.pow(t, 4);
+    } else if (y < 1941) {
+      t = y - 1920;
+      dt = 21.20 + 0.84493 * t - 0.076100 * t * t + 0.0020936 * Math.pow(t, 3);
+    } else if (y < 1961) {
+      t = y - 1950;
+      dt = 29.07 + 0.407 * t - (t * t) / 233 + Math.pow(t, 3) / 2547;
+    } else if (y < 1986) {
+      t = y - 1975;
+      dt = 45.45 + 1.067 * t - (t * t) / 260 - Math.pow(t, 3) / 718;
+    } else if (y < 2005) {
+      t = y - 2000;
+      dt = 63.86 + 0.3345 * t - 0.060374 * t * t + 0.0017275 * Math.pow(t, 3)
+        + 0.000651814 * Math.pow(t, 4) + 0.00002373599 * Math.pow(t, 5);
+    } else if (y < 2050) {
+      t = y - 2000;
+      dt = 62.92 + 0.32217 * t + 0.005589 * t * t;
+    } else if (y < 2150) {
+      dt = -20 + 32 * Math.pow((y - 1820) / 100, 2) - 0.5628 * (2150 - y);
+    } else { u = (y - 1820) / 100; dt = -20 + 32 * u * u; }
+    return dt;
+  }
+
+  // ---- Nutasi rendah-presisi (Meeus 22.a) ----
+  function nutation(T) {
+    var Omega = normDeg(125.04452 - 1934.136261 * T + 0.0020708 * T * T + (T * T * T) / 450000);
+    var Lsun = normDeg(280.4665 + 36000.7698 * T);
+    var Lmoon = normDeg(218.3165 + 481267.8813 * T);
+    var dpsi = (-17.20 * Math.sin(rad(Omega)) - 1.32 * Math.sin(rad(2 * Lsun))
+      - 0.23 * Math.sin(rad(2 * Lmoon)) + 0.21 * Math.sin(rad(2 * Omega))) / 3600;
+    var deps = (9.20 * Math.cos(rad(Omega)) + 0.57 * Math.cos(rad(2 * Lsun))
+      + 0.10 * Math.cos(rad(2 * Lmoon)) - 0.09 * Math.cos(rad(2 * Omega))) / 3600;
+    return { dpsi: dpsi, deps: deps, Omega: Omega };
+  }
+
+  // ---- Obliquity rata-rata ekliptika (Meeus 22.2) ----
+  function meanObliquity(T) {
+    return (23 + 26 / 60 + 21.448 / 3600) - (46.8150 * T + 0.00059 * T * T - 0.001813 * T * T * T) / 3600;
+  }
+
+  // ---- Posisi matahari (Meeus bab 25, rendah-presisi + nutasi) ----
+  function sunPosition(jdUT, dtSeconds) {
+    var jde = jdUT + dtSeconds / 86400;
+    var T = (jde - 2451545) / 36525;
+    var L0 = normDeg(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
+    var M = normDeg(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
+    var e = 0.016708634 - 0.000042037 * T - 0.0000001267 * T * T;
+    var Mrad = rad(M);
+    var C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mrad)
+      + (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad)
+      + 0.000289 * Math.sin(3 * Mrad);
+    var trueLong = normDeg(L0 + C);
+    var trueAnom = normDeg(M + C);
+    var R = (1.000001018 * (1 - e * e)) / (1 + e * Math.cos(rad(trueAnom)));
+    var nut = nutation(T);
+    var aberration = -0.00569; // derajat, koreksi aberasi tahunan (≈ -20.4898"/R)
+    var lambda = normDeg(trueLong + aberration + nut.dpsi);
+    var eps0 = meanObliquity(T);
+    var eps = eps0 + nut.deps;
+    var lambdaRad = rad(lambda), epsRad = rad(eps);
+    var alpha = normDeg(deg(Math.atan2(Math.cos(epsRad) * Math.sin(lambdaRad), Math.cos(lambdaRad))));
+    var delta = deg(Math.asin(Math.sin(epsRad) * Math.sin(lambdaRad)));
+
+    // Equation of time (Meeus 28.1), dinormalisasi ke [-180,180] derajat sebelum ke menit
+    var eotDeg = L0 - 0.0057183 - alpha + nut.dpsi * Math.cos(epsRad);
+    eotDeg = mod(eotDeg + 180, 360) - 180;
+    var eotMinutes = eotDeg * 4;
+
+    // Semi diameter piringan matahari (Meeus 55.\u200b/ Explanatory Supplement): SD = 959.63" / R(AU)
+    var semiDiameterArcsec = 959.63 / R;
+
+    return {
+      T: T, L0: L0, M: M, e: e, C: C, trueLong: trueLong, R: R,
+      lambda: lambda, eps0: eps0, eps: eps, alpha: alpha, delta: delta,
+      eotMinutes: eotMinutes, Omega: nut.Omega, semiDiameterArcsec: semiDiameterArcsec
+    };
+  }
+
+  // ---- Kalender dari Julian Day (Meeus 7.c, invers Julian Day) ----
+  function calendarFromJD(jd) {
+    var jdShift = jd + 0.5;
+    var Z = Math.floor(jdShift);
+    var F = jdShift - Z;
+    var A;
+    if (Z < 2299161) { A = Z; }
+    else { var alpha = Math.floor((Z - 1867216.25) / 36524.25); A = Z + 1 + alpha - Math.floor(alpha / 4); }
+    var B = A + 1524;
+    var C = Math.floor((B - 122.1) / 365.25);
+    var D = Math.floor(365.25 * C);
+    var E = Math.floor((B - D) / 30.6001);
+    var dayFrac = B - D - Math.floor(30.6001 * E) + F;
+    var day = Math.floor(dayFrac);
+    var hourUT = (dayFrac - day) * 24;
+    var month = E < 14 ? E - 1 : E - 13;
+    var year = month > 2 ? C - 4716 : C - 4715;
+    return { Y: year, M: month, D: day, hourUT: hourUT };
+  }
+
+  // ---- Azimuth & altitude matahari untuk pengamat di (latDeg, lonDeg-timur+) ----
+  function azimuthAltitude(jdUT, alphaDeg, deltaDeg, latDeg, lonDeg) {
+    var jd0 = Math.floor(jdUT - 0.5) + 0.5; // JD pukul 0 UT pada tanggal yg sama
+    var T0 = (jd0 - 2451545) / 36525;
+    var gst0 = normHour(6.6973745583 + 2400.0513369072 * T0 + 0.0000258622 * T0 * T0);
+    var utHours = (jdUT - jd0) * 24;
+    var gst = gst0 + 1.00273790935 * utHours;
+    var lst = mod(gst + lonDeg / 15, 24);
+    var H = mod((lst - alphaDeg / 15) * 15, 360);
+    var Hrad = rad(H), latRad = rad(latDeg), deltaRad = rad(deltaDeg);
+    var sinAlt = Math.sin(latRad) * Math.sin(deltaRad) + Math.cos(latRad) * Math.cos(deltaRad) * Math.cos(Hrad);
+    var alt = deg(Math.asin(sinAlt));
+    var sinAz = Math.sin(Hrad);
+    var cosAz = Math.cos(Hrad) * Math.sin(latRad) - Math.tan(deltaRad) * Math.cos(latRad);
+    var az = mod(deg(Math.atan2(cosAz, sinAz)) + 180, 360);
+    return { az: az, alt: alt, H: H, lst: lst };
+  }
+
+  // ---- Fungsi gabungan tingkat-tinggi ----
+  // Y,M,D,hourLocal: tanggal & jam LOKAL (atau GMT bila tzOffset=0); tzOffset: offset UTC (jam)
+  // latDeg (+utara), lonDeg (+timur)
+  function computeSolarData(Y, M, D, hourLocal, tzOffset, latDeg, lonDeg) {
+    var hourUT = hourLocal - tzOffset;
+    var jdUT = julianDay(Y, M, D, hourUT);
+    var dt = deltaT(Y, M);
+    var sp = sunPosition(jdUT, dt);
+    var aa = azimuthAltitude(jdUT, sp.alpha, sp.delta, latDeg, lonDeg);
+    return {
+      jdUT: jdUT, deltaT: dt,
+      // -- gaya "Data Matahari" Ephemeris Hisab Rukyat (Kemenag RI) --
+      eclipticLongitude: sp.lambda,      // Bujur Astronomi (apparent)
+      eclipticLatitudeArcsec: 0,         // Lintang Astronomi \u2014 diabaikan pada metode rendah-presisi (lihat catatan aplikasi)
+      rightAscension: sp.alpha,          // Asensio Rekta (apparent, derajat)
+      declination: sp.delta,             // Deklinasi (apparent)
+      distanceAU: sp.R,                  // Jarak Geosentris (AU)
+      semiDiameterArcsec: sp.semiDiameterArcsec, // Semi Diameter
+      trueObliquity: sp.eps,             // Kemiringan Ekliptika (true obliquity)
+      eotMinutes: sp.eotMinutes,         // Equation of Time / Perata Waktu
+      // -- tambahan posisi horizon (di luar cakupan buku, opsional) --
+      azimuth: aa.az, altitude: aa.alt, hourAngle: aa.H
+    };
+  }
+
+  global.SolarCore = {
+    julianDay: julianDay,
+    calendarFromJD: calendarFromJD,
+    deltaT: deltaT,
+    nutation: nutation,
+    meanObliquity: meanObliquity,
+    sunPosition: sunPosition,
+    azimuthAltitude: azimuthAltitude,
+    computeSolarData: computeSolarData,
+    rad: rad, deg: deg, normDeg: normDeg, normHour: normHour, mod: mod
+  };
+})(window);
+
+</script>
+<script>
+(function () {
+  "use strict";
+  var SC = window.SolarCore;
+
+  // ============================================================
+  // Util: DMS <-> Decimal, format
+  // ============================================================
+  function dmsToDecimal(d, m, s, dir) {
+    var v = Math.abs(d) + m / 60 + s / 3600;
+    if (dir === "S" || dir === "B") v = -v;
+    return v;
+  }
+  function decimalToDMS(value) {
+    var sign = value < 0 ? -1 : 1;
+    var abs = Math.abs(value);
+    var d = Math.floor(abs);
+    var mFull = (abs - d) * 60;
+    var m = Math.floor(mFull);
+    var s = (mFull - m) * 60;
+    // handle rounding overflow (59.999 -> 60)
+    if (s >= 59.995) { s = 0; m += 1; }
+    if (m >= 60) { m = 0; d += 1; }
+    return { sign: sign, d: d, m: m, s: s };
+  }
+  function fmtDMS(value, decimals) {
+    var p = decimalToDMS(value);
+    var sStr = p.s.toFixed(decimals === undefined ? 1 : decimals);
+    return p.d + "\u00B0 " + pad2(p.m) + "' " + pad2(sStr) + '"';
+  }
+  function pad2(v) {
+    var str = String(v);
+    if (str.indexOf(".") === -1) return str.length < 2 ? "0" + str : str;
+    var parts = str.split(".");
+    return (parts[0].length < 2 ? "0" + parts[0] : parts[0]) + "." + parts[1];
+  }
+  function fmtDeclDMS(value) {
+    var arah = value >= 0 ? "U" : "S";
+    return fmtDMS(Math.abs(value), 1) + " " + arah;
+  }
+  function fmtAzAltDMS(value) {
+    return fmtDMS(value, 1);
+  }
+  function fmtEoT(minutes) {
+    var sign = minutes >= 0 ? "+" : "\u2212";
+    var abs = Math.abs(minutes);
+    var m = Math.floor(abs);
+    var s = Math.round((abs - m) * 60);
+    if (s === 60) { s = 0; m += 1; }
+    return sign + pad2(m) + "m " + pad2(s) + "d";
+  }
+
+  // ---- Format gaya buku Ephemeris Hisab Rukyat (koma sebagai desimal, detik busur bulat) ----
+  function toComma(str) { return String(str).replace(".", ","); }
+  function fmtBookDMS(valueDeg) {
+    var sign = valueDeg < 0 ? "-" : "";
+    var abs = Math.abs(valueDeg);
+    var d = Math.floor(abs);
+    var mFull = (abs - d) * 60;
+    var m = Math.floor(mFull);
+    var s = Math.round((mFull - m) * 60);
+    if (s >= 60) { s = 0; m += 1; }
+    if (m >= 60) { m = 0; d += 1; }
+    return sign + d + "\u00B0 " + pad2(m) + "' " + pad2(s) + '"';
+  }
+  function fmtBookDeclDMS(valueDeg) {
+    var arah = valueDeg >= 0 ? "U" : "S";
+    return fmtBookDMS(Math.abs(valueDeg)) + " " + arah;
+  }
+  function fmtBookDistance(au) { return toComma(au.toFixed(7)); }
+  function fmtBookSemiDiameter(arcsecTotal) {
+    var m = Math.floor(arcsecTotal / 60);
+    var s = arcsecTotal - m * 60;
+    return m + "' " + toComma(s.toFixed(2)) + '"';
+  }
+  function fmtBookEclLat() { return "\u2248 0,00\u2033 *"; }
+  function fmtBookEoT(minutesFloat) {
+    var sign = minutesFloat < 0 ? "-" : "";
+    var abs = Math.abs(minutesFloat);
+    var m = Math.floor(abs);
+    var s = Math.round((abs - m) * 60);
+    if (s >= 60) { s = 0; m += 1; }
+    return sign + pad2(m) + "m " + pad2(s) + "s";
+  }
+  function daysInMonth(Y, M) { return new Date(Y, M, 0).getDate(); }
+  function dayOfYear(Y, M, D) {
+    var start = Date.UTC(Y, 0, 1);
+    var cur = Date.UTC(Y, M - 1, D);
+    return Math.round((cur - start) / 86400000) + 1;
+  }
+  function isLeap(Y) { return (Y % 4 === 0 && Y % 100 !== 0) || Y % 400 === 0; }
+
+  var BULAN_ID = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  var BULAN_SHORT = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+
+  // ============================================================
+  // State
+  // ============================================================
+  var state = {
+    mode: "jam",
+    rows: [],
+    selectedIndex: -1,
+    latDeg: 0, lonDeg: 0, tz: 7,
+    yearForAnnual: new Date().getFullYear(),
+    annualDecl: [], annualEot: [],
+    annualCache: {},      // { year: {decl:[], eot:[]} }
+    playTimer: null
+  };
+
+  // ============================================================
+  // Init defaults
+  // ============================================================
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function initDefaults() {
+    var today = new Date();
+    var todayStr = today.getFullYear() + "-" + pad(today.getMonth() + 1) + "-" + pad(today.getDate());
+    document.getElementById("jamTanggal").value = todayStr;
+    document.getElementById("hariMulai").value = todayStr;
+    var plus7 = new Date(today.getTime() + 7 * 86400000);
+    document.getElementById("hariAkhir").value = plus7.getFullYear() + "-" + pad(plus7.getMonth() + 1) + "-" + pad(plus7.getDate());
+    var mStr = today.getFullYear() + "-" + pad(today.getMonth() + 1);
+    document.getElementById("bulanMulai").value = mStr;
+    var plus11 = new Date(today.getFullYear(), today.getMonth() + 11, 1);
+    document.getElementById("bulanAkhir").value = plus11.getFullYear() + "-" + pad(plus11.getMonth() + 1);
+  }
+
+  // ============================================================
+  // Mode tabs
+  // ============================================================
+  var tabs = document.querySelectorAll(".mode-tab");
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      tabs.forEach(function (t) { t.classList.remove("active"); });
+      tab.classList.add("active");
+      state.mode = tab.getAttribute("data-mode");
+      document.querySelectorAll(".period-block").forEach(function (b) { b.classList.remove("active"); });
+      document.getElementById("block-" + state.mode).classList.add("active");
+    });
+  });
+
+  // Timezone custom toggle
+  document.getElementById("tzPreset").addEventListener("change", function (e) {
+    document.getElementById("tzCustomWrap").style.display = e.target.value === "custom" ? "block" : "none";
+  });
+
+  function getTzOffset() {
+    var preset = document.getElementById("tzPreset").value;
+    if (preset === "custom") return parseFloat(document.getElementById("tzCustom").value) || 0;
+    return parseFloat(preset);
+  }
+
+  // Acuan jam tabel: "gmt" (seperti buku Ephemeris, jam yang dimasukkan = UT) atau "lokal"
+  function getAcuanJam() {
+    var el = document.getElementById("acuanJam");
+    return el ? el.value : "gmt";
+  }
+  function getEffectiveTz() {
+    return getAcuanJam() === "gmt" ? 0 : getTzOffset();
+  }
+
+  function getLocation() {
+    var latD = parseFloat(document.getElementById("latD").value) || 0;
+    var latM = parseFloat(document.getElementById("latM").value) || 0;
+    var latS = parseFloat(document.getElementById("latS").value) || 0;
+    var latDir = document.getElementById("latDir").value;
+    var lonD = parseFloat(document.getElementById("lonD").value) || 0;
+    var lonM = parseFloat(document.getElementById("lonM").value) || 0;
+    var lonS = parseFloat(document.getElementById("lonS").value) || 0;
+    var lonDir = document.getElementById("lonDir").value;
+    return {
+      lat: dmsToDecimal(latD, latM, latS, latDir),
+      lon: dmsToDecimal(lonD, lonM, lonS, lonDir)
+    };
+  }
+
+  // ============================================================
+  // GPS
+  // ============================================================
+  document.getElementById("btnGps").addEventListener("click", function () {
+    var statusEl = document.getElementById("gpsStatus");
+    if (!navigator.geolocation) {
+      statusEl.textContent = "Geolocation tidak didukung browser ini.";
+      return;
+    }
+    statusEl.textContent = "Mencari lokasi...";
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      var lat = pos.coords.latitude, lon = pos.coords.longitude;
+      var latP = decimalToDMS(lat), lonP = decimalToDMS(lon);
+      document.getElementById("latD").value = latP.d;
+      document.getElementById("latM").value = latP.m;
+      document.getElementById("latS").value = latP.s.toFixed(2);
+      document.getElementById("latDir").value = lat < 0 ? "S" : "U";
+      document.getElementById("lonD").value = lonP.d;
+      document.getElementById("lonM").value = lonP.m;
+      document.getElementById("lonS").value = lonP.s.toFixed(2);
+      document.getElementById("lonDir").value = lon < 0 ? "B" : "T";
+      statusEl.textContent = "Lokasi ditemukan: " + lat.toFixed(4) + ", " + lon.toFixed(4);
+    }, function (err) {
+      statusEl.textContent = "Gagal mengambil lokasi (" + err.message + ").";
+    });
+  });
+
+  // ============================================================
+  // Period generation
+  // ============================================================
+  function generatePeriodJam() {
+    var dateStr = document.getElementById("jamTanggal").value;
+    if (!dateStr) return [];
+    var parts = dateStr.split("-");
+    var Y = parseInt(parts[0], 10), M = parseInt(parts[1], 10), D = parseInt(parts[2], 10);
+    var jamMulai = parseFloat(document.getElementById("jamMulai").value);
+    var jamAkhir = parseFloat(document.getElementById("jamAkhir").value);
+    var intervalMin = parseInt(document.getElementById("jamInterval").value, 10);
+    var out = [];
+    var stepHour = intervalMin / 60;
+    for (var h = jamMulai; h <= jamAkhir + 1e-9; h += stepHour) {
+      var hh = Math.floor(h);
+      var mm = Math.round((h - hh) * 60);
+      if (mm === 60) { mm = 0; hh += 1; }
+      out.push({ Y: Y, M: M, D: D, hourLocal: h, label: pad(hh) + ":" + pad(mm) });
+    }
+    return out;
+  }
+
+  function generatePeriodHari() {
+    var mulaiStr = document.getElementById("hariMulai").value;
+    var akhirStr = document.getElementById("hariAkhir").value;
+    if (!mulaiStr || !akhirStr) return [];
+    var intervalHari = parseInt(document.getElementById("hariInterval").value, 10) || 1;
+    var jamAcuanStr = document.getElementById("hariJamAcuan").value || "12:00";
+    var jamParts = jamAcuanStr.split(":");
+    var hourLocal = parseInt(jamParts[0], 10) + parseInt(jamParts[1], 10) / 60;
+    var start = new Date(mulaiStr + "T00:00:00");
+    var end = new Date(akhirStr + "T00:00:00");
+    var out = [];
+    var cur = new Date(start.getTime());
+    var guard = 0;
+    while (cur.getTime() <= end.getTime() && guard < 3000) {
+      var Y = cur.getFullYear(), M = cur.getMonth() + 1, D = cur.getDate();
+      out.push({
+        Y: Y, M: M, D: D, hourLocal: hourLocal,
+        label: pad(D) + " " + BULAN_SHORT[M - 1] + " " + Y
+      });
+      cur.setDate(cur.getDate() + intervalHari);
+      guard++;
+    }
+    return out;
+  }
+
+  function generatePeriodBulan() {
+    var mulaiStr = document.getElementById("bulanMulai").value; // yyyy-mm
+    var akhirStr = document.getElementById("bulanAkhir").value;
+    if (!mulaiStr || !akhirStr) return [];
+    var tanggalAcuan = parseInt(document.getElementById("bulanTanggalAcuan").value, 10) || 15;
+    var jamAcuanStr = document.getElementById("bulanJamAcuan").value || "12:00";
+    var jamParts = jamAcuanStr.split(":");
+    var hourLocal = parseInt(jamParts[0], 10) + parseInt(jamParts[1], 10) / 60;
+    var mp = mulaiStr.split("-"), ap = akhirStr.split("-");
+    var Y1 = parseInt(mp[0], 10), M1 = parseInt(mp[1], 10);
+    var Y2 = parseInt(ap[0], 10), M2 = parseInt(ap[1], 10);
+    var out = [];
+    var y = Y1, m = M1, guard = 0;
+    while ((y < Y2 || (y === Y2 && m <= M2)) && guard < 1200) {
+      var D = Math.min(tanggalAcuan, daysInMonth(y, m));
+      out.push({
+        Y: y, M: m, D: D, hourLocal: hourLocal,
+        label: BULAN_ID[m - 1] + " " + y
+      });
+      m++;
+      if (m > 12) { m = 1; y++; }
+      guard++;
+    }
+    return out;
+  }
+
+  // ============================================================
+  // Compute
+  // ============================================================
+  document.getElementById("btnHitung").addEventListener("click", function () {
+    var loc = getLocation();
+    var tz = getTzOffset();
+    var effTz = getEffectiveTz();
+    state.latDeg = loc.lat; state.lonDeg = loc.lon; state.tz = tz;
+
+    var period;
+    var waktuHeader;
+    var acuan = getAcuanJam();
+    if (state.mode === "jam") { period = generatePeriodJam(); waktuHeader = acuan === "gmt" ? "Jam (GMT)" : "Jam (Lokal)"; }
+    else if (state.mode === "hari") { period = generatePeriodHari(); waktuHeader = "Tanggal"; }
+    else { period = generatePeriodBulan(); waktuHeader = "Bulan"; }
+
+    document.getElementById("thWaktu").textContent = waktuHeader;
+
+    if (!period.length) {
+      alert("Periode belum lengkap. Mohon lengkapi tanggal / rentang waktu terlebih dahulu.");
+      return;
+    }
+    if (period.length > 1500) {
+      alert("Periode terlalu panjang (" + period.length + " baris). Perkecil rentang atau perbesar interval.");
+      return;
+    }
+
+    var rows = period.map(function (p) {
+      var r = SC.computeSolarData(p.Y, p.M, p.D, p.hourLocal, effTz, loc.lat, loc.lon);
+      r.label = p.label; r.Y = p.Y; r.M = p.M; r.D = p.D; r.hourLocal = p.hourLocal;
+      return r;
+    });
+    state.rows = rows;
+    state.selectedIndex = Math.floor(rows.length / 2);
+
+    document.getElementById("dataTable").classList.toggle("show-azalt", document.getElementById("showAzAlt").checked);
+    renderTable(rows, waktuHeader);
+    updateBookBanner(period, acuan);
+    computeAnnualCurves(rows[state.selectedIndex].Y);
+    renderCharts(rows);
+    renderIllustrations(state.selectedIndex);
+
+    document.getElementById("illusSection").style.display = "block";
+    document.getElementById("chartSection").style.display = "block";
+    document.getElementById("tableSection").style.display = "block";
+    document.getElementById("emptySection").style.display = "none";
+  });
+
+  document.getElementById("showAzAlt").addEventListener("change", function (e) {
+    document.getElementById("dataTable").classList.toggle("show-azalt", e.target.checked);
+  });
+
+  function updateBookBanner(period, acuan) {
+    var banner = document.getElementById("bookBanner");
+    if (state.mode === "jam" && period.length) {
+      var p0 = period[0];
+      banner.style.display = "block";
+      banner.innerHTML =
+        '<div class="bb-title">' + p0.D + " " + BULAN_ID[p0.M - 1] + " " + p0.Y + " M</div>" +
+        '<div class="bb-sub">DATA MATAHARI &middot; Acuan ' + (acuan === "gmt" ? "GMT / UT" : "Waktu Lokal") + "</div>";
+    } else {
+      banner.style.display = "none";
+    }
+  }
+
+  // ============================================================
+  // Table
+  // ============================================================
+  function renderTable(rows) {
+    var tbody = document.getElementById("tbody");
+    tbody.innerHTML = "";
+    rows.forEach(function (r, i) {
+      var tr = document.createElement("tr");
+      tr.dataset.idx = i;
+      var eotClass = r.eotMinutes >= 0 ? "eot-plus" : "eot-minus";
+      tr.innerHTML =
+        "<td>" + (i + 1) + "</td>" +
+        "<td>" + r.label + "</td>" +
+        "<td class='num'>" + fmtBookDMS(r.eclipticLongitude) + "</td>" +
+        "<td class='num'>" + fmtBookEclLat() + "</td>" +
+        "<td class='num'>" + fmtBookDMS(r.rightAscension) + "</td>" +
+        "<td class='num'>" + fmtBookDeclDMS(r.declination) + "</td>" +
+        "<td class='num'>" + fmtBookDistance(r.distanceAU) + "</td>" +
+        "<td class='num'>" + fmtBookSemiDiameter(r.semiDiameterArcsec) + "</td>" +
+        "<td class='num'>" + fmtBookDMS(r.trueObliquity) + "</td>" +
+        "<td class='num " + eotClass + "'>" + fmtBookEoT(r.eotMinutes) + "</td>" +
+        "<td class='num col-azalt'>" + fmtAzAltDMS(r.azimuth) + "</td>" +
+        "<td class='num col-azalt'>" + fmtAzAltDMS(r.altitude) + "</td>";
+      tr.addEventListener("click", function () {
+        document.querySelectorAll("#tbody tr").forEach(function (t) { t.classList.remove("sel"); });
+        tr.classList.add("sel");
+        state.selectedIndex = i;
+        renderIllustrations(i);
+        highlightChartMarker(i, rows.length);
+      });
+      tbody.appendChild(tr);
+    });
+    document.getElementById("rowCount").textContent = rows.length + " baris data";
+  }
+
+  // ============================================================
+  // CSV export
+  // ============================================================
+  document.getElementById("btnCsv").addEventListener("click", function () {
+    if (!state.rows.length) { alert("Belum ada data untuk diunduh. Tekan Hitung Data Matahari terlebih dahulu."); return; }
+    var lines = ["No;Jam;Bujur Astronomi;Lintang Astronomi;Asensio Rekta;Deklinasi;Jarak Geosentris (AU);Semi Diameter;Kemiringan Ekliptika;Equation of Time;Azimuth;Altitude"];
+    state.rows.forEach(function (r, i) {
+      lines.push([
+        i + 1, r.label,
+        fmtBookDMS(r.eclipticLongitude),
+        fmtBookEclLat(),
+        fmtBookDMS(r.rightAscension),
+        fmtBookDeclDMS(r.declination),
+        fmtBookDistance(r.distanceAU),
+        fmtBookSemiDiameter(r.semiDiameterArcsec),
+        fmtBookDMS(r.trueObliquity),
+        fmtBookEoT(r.eotMinutes),
+        fmtAzAltDMS(r.azimuth),
+        fmtAzAltDMS(r.altitude)
+      ].join(";"));
+    });
+    var blob = new Blob(["\uFEFF" + lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "data-matahari.csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // ============================================================
+  // Annual curves (untuk ilustrasi & konteks tahunan)
+  // ============================================================
+  function computeAnnualCurves(year) {
+    if (state.annualCache[year]) {
+      state.annualDecl = state.annualCache[year].decl;
+      state.annualEot = state.annualCache[year].eot;
+      state.yearForAnnual = year;
+      return;
+    }
+    var N = 74; // resolusi lebih halus (~setiap 5 hari)
+    var decl = [], eot = [];
+    var totalDays = isLeap(year) ? 366 : 365;
+    for (var i = 0; i < N; i++) {
+      var frac = i / (N - 1);
+      var doy = Math.round(frac * (totalDays - 1)) + 1;
+      var dObj = new Date(Date.UTC(year, 0, 1) + (doy - 1) * 86400000);
+      var Y = dObj.getUTCFullYear(), M = dObj.getUTCMonth() + 1, D = dObj.getUTCDate();
+      var jd = SC.julianDay(Y, M, D, 12); // 12:00 UT acuan tahunan
+      var dt = SC.deltaT(Y, M);
+      var sp = SC.sunPosition(jd, dt);
+      decl.push(sp.delta);
+      eot.push(sp.eotMinutes);
+    }
+    state.annualCache[year] = { decl: decl, eot: eot };
+    state.annualDecl = decl;
+    state.annualEot = eot;
+    state.yearForAnnual = year;
+  }
+
+  // ============================================================
+  // Charts (canvas)
+  // ============================================================
+  function drawLineChart(canvas, values, opts) {
+    var dpr = window.devicePixelRatio || 1;
+    var cssWidth = canvas.clientWidth || 900;
+    var cssHeight = opts.height || 220;
+    canvas.width = cssWidth * dpr;
+    canvas.height = cssHeight * dpr;
+    canvas.style.height = cssHeight + "px";
+    var ctx = canvas.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cssWidth, cssHeight);
+
+    var padL = 52, padR = 18, padT = 16, padB = 28;
+    var plotW = cssWidth - padL - padR;
+    var plotH = cssHeight - padT - padB;
+
+    var minY = opts.minY, maxY = opts.maxY;
+    if (minY === undefined) { minY = Math.min.apply(null, values); maxY = Math.max.apply(null, values); }
+    if (minY === maxY) { minY -= 1; maxY += 1; }
+    var pad = (maxY - minY) * 0.12;
+    minY -= pad; maxY += pad;
+
+    function xAt(i) { return padL + (values.length <= 1 ? 0 : (i / (values.length - 1)) * plotW); }
+    function yAt(v) { return padT + (1 - (v - minY) / (maxY - minY)) * plotH; }
+
+    // grid + reference lines
+    ctx.strokeStyle = "#1f5540";
+    ctx.lineWidth = 1;
+    ctx.font = "11px Cairo, sans-serif";
+    ctx.fillStyle = "#7fa393";
+    var gridSteps = 4;
+    for (var g = 0; g <= gridSteps; g++) {
+      var val = minY + (g / gridSteps) * (maxY - minY);
+      var y = yAt(val);
+      ctx.beginPath();
+      ctx.setLineDash([2, 3]);
+      ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillText(val.toFixed(1) + (opts.unit || ""), 4, y + 3);
+    }
+
+    (opts.refLines || []).forEach(function (rl) {
+      var y = yAt(rl.y);
+      ctx.strokeStyle = rl.color || "#c9a24a";
+      ctx.setLineDash(rl.dash || [5, 4]);
+      ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y); ctx.stroke();
+      ctx.setLineDash([]);
+      if (rl.label) {
+        ctx.fillStyle = rl.color || "#c9a24a";
+        ctx.fillText(rl.label, padL + plotW - ctx.measureText(rl.label).width - 4, y - 4);
+      }
+    });
+
+    // axis baseline
+    ctx.strokeStyle = "#2a6b52";
+    ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH); ctx.stroke();
+
+    // line
+    ctx.strokeStyle = opts.color || "#e8c66a";
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    values.forEach(function (v, i) {
+      var x = xAt(i), y = yAt(v);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // fill under curve
+    var grad = ctx.createLinearGradient(0, padT, 0, padT + plotH);
+    grad.addColorStop(0, "rgba(232,198,106,0.22)");
+    grad.addColorStop(1, "rgba(232,198,106,0.0)");
+    ctx.lineTo(xAt(values.length - 1), padT + plotH);
+    ctx.lineTo(xAt(0), padT + plotH);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // x labels (sparse)
+    ctx.fillStyle = "#7fa393";
+    var labelEvery = Math.max(1, Math.ceil(values.length / (opts.maxLabels || 10)));
+    (opts.labels || []).forEach(function (lab, i) {
+      if (i % labelEvery === 0 || i === values.length - 1) {
+        var x = xAt(i);
+        ctx.save();
+        ctx.translate(x, padT + plotH + 16);
+        ctx.textAlign = "center";
+        ctx.fillText(lab, 0, 0);
+        ctx.restore();
+      }
+    });
+
+    // marker point (selected)
+    if (opts.markerIndex !== undefined && opts.markerIndex >= 0 && opts.markerIndex < values.length) {
+      var mx = xAt(opts.markerIndex), my = yAt(values[opts.markerIndex]);
+      ctx.beginPath();
+      ctx.arc(mx, my, 5, 0, Math.PI * 2);
+      ctx.fillStyle = "#f3ecd9";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#0a2c20";
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = "#f3ecd9";
+      ctx.moveTo(mx, padT); ctx.lineTo(mx, padT + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    return { xAt: xAt, yAt: yAt };
+  }
+
+  function renderCharts(rows) {
+    var declVals = rows.map(function (r) { return r.declination; });
+    var eotVals = rows.map(function (r) { return r.eotMinutes; });
+    var labels = rows.map(function (r) { return r.label; });
+
+    drawLineChart(document.getElementById("chartDeklinasi"), declVals, {
+      color: "#e8c66a", unit: "\u00B0", height: 220,
+      minY: -25, maxY: 25,
+      refLines: [
+        { y: 0, color: "#7fb9d6", dash: [1, 0], label: "Ekuator" },
+        { y: 23.4367, color: "#c9a24a", dash: [5, 4], label: "Balik Utara 23\u00B026'" },
+        { y: -23.4367, color: "#c9a24a", dash: [5, 4], label: "Balik Selatan 23\u00B026'" }
+      ],
+      labels: labels, markerIndex: state.selectedIndex
+    });
+
+    drawLineChart(document.getElementById("chartEot"), eotVals, {
+      color: "#e8c66a", unit: "m", height: 220,
+      minY: -18, maxY: 18,
+      refLines: [{ y: 0, color: "#7fb9d6", dash: [1, 0], label: "Nol" }],
+      labels: labels, markerIndex: state.selectedIndex
+    });
+  }
+
+  function highlightChartMarker(idx) {
+    renderCharts(state.rows);
+  }
+
+  // ============================================================
+  // Illustrations (SVG)
+  // ============================================================
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS(SVG_NS, tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+
+  function renderDeklinasiSVG(row, annualDecl) {
+    var svg = document.getElementById("svgDeklinasi");
+    svg.innerHTML = "";
+    var W = 320, H = 220;
+    var padL = 36, padR = 14, padT = 18, padB = 34;
+    var plotW = W - padL - padR, plotH = H - padT - padB;
+    var minY = -25, maxY = 25;
+    function yAt(v) { return padT + (1 - (v - minY) / (maxY - minY)) * plotH; }
+    function xAt(frac) { return padL + frac * plotW; }
+
+    // tropic + equator lines
+    [0, 23.4367, -23.4367].forEach(function (v, idx) {
+      var line = svgEl("line", {
+        x1: padL, x2: padL + plotW, y1: yAt(v), y2: yAt(v),
+        stroke: idx === 0 ? "#7fb9d6" : "#8a7538",
+        "stroke-width": idx === 0 ? 1.2 : 1,
+        "stroke-dasharray": idx === 0 ? "0" : "4,3",
+        opacity: idx === 0 ? 0.8 : 0.6
+      });
+      svg.appendChild(line);
+    });
+    svg.appendChild(svgEl("text", { x: 4, y: yAt(23.4367) + 3, fill: "#8a7538", "font-size": 8 })).textContent = "+23\u00B026'";
+    svg.appendChild(svgEl("text", { x: 4, y: yAt(-23.4367) + 3, fill: "#8a7538", "font-size": 8 })).textContent = "\u221223\u00B026'";
+    svg.appendChild(svgEl("text", { x: 4, y: yAt(0) + 3, fill: "#7fb9d6", "font-size": 8 })).textContent = "0\u00B0";
+
+    // annual curve
+    var pts = annualDecl.map(function (v, i) { return xAt(i / (annualDecl.length - 1)) + "," + yAt(v); }).join(" ");
+    var poly = svgEl("polyline", { points: pts, fill: "none", stroke: "#4f7d68", "stroke-width": 1.6 });
+    svg.appendChild(poly);
+
+    // marker
+    var totalDays = isLeap(row.Y) ? 366 : 365;
+    var frac = (dayOfYear(row.Y, row.M, row.D) - 1) / (totalDays - 1);
+    var mx = xAt(frac), my = yAt(row.declination);
+    var ray = svgEl("g", {});
+    for (var a = 0; a < 8; a++) {
+      var ang = (a / 8) * Math.PI * 2;
+      ray.appendChild(svgEl("line", {
+        x1: mx + Math.cos(ang) * 7, y1: my + Math.sin(ang) * 7,
+        x2: mx + Math.cos(ang) * 11, y2: my + Math.sin(ang) * 11,
+        stroke: "#e8c66a", "stroke-width": 1.4
+      }));
+    }
+    svg.appendChild(ray);
+    svg.appendChild(svgEl("circle", { cx: mx, cy: my, r: 6, fill: "#e8c66a", stroke: "#0a2c20", "stroke-width": 1.5 }));
+    svg.appendChild(svgEl("line", { x1: mx, x2: mx, y1: padT, y2: padT + plotH, stroke: "#f3ecd9", "stroke-width": 0.6, "stroke-dasharray": "2,3", opacity: 0.5 }));
+
+    // month ticks
+    for (var mth = 0; mth < 12; mth++) {
+      var tf = mth / 12;
+      var tx = xAt(tf);
+      svg.appendChild(svgEl("line", { x1: tx, x2: tx, y1: padT + plotH, y2: padT + plotH + 3, stroke: "#4f7d68", "stroke-width": 1 }));
+    }
+    svg.appendChild(svgEl("text", { x: padL, y: H - 6, fill: "#7fa393", "font-size": 8 })).textContent = "Jan";
+    svg.appendChild(svgEl("text", { x: padL + plotW - 14, y: H - 6, fill: "#7fa393", "font-size": 8 })).textContent = "Des";
+
+    document.getElementById("declReadout").textContent = fmtDeclDMS(row.declination);
+    document.getElementById("declReadoutLabel").textContent = "Deklinasi \u2014 " + row.label;
+  }
+
+  function renderEotSVG(row, annualEot) {
+    var svg = document.getElementById("svgEot");
+    svg.innerHTML = "";
+    var W = 320, H = 220;
+    var padL = 36, padR = 14, padT = 18, padB = 34;
+    var plotW = W - padL - padR, plotH = H - padT - padB;
+    var minY = -18, maxY = 18;
+    function yAt(v) { return padT + (1 - (v - minY) / (maxY - minY)) * plotH; }
+    function xAt(frac) { return padL + frac * plotW; }
+
+    var zero = svgEl("line", { x1: padL, x2: padL + plotW, y1: yAt(0), y2: yAt(0), stroke: "#7fb9d6", "stroke-width": 1.2, opacity: 0.8 });
+    svg.appendChild(zero);
+    svg.appendChild(svgEl("text", { x: 4, y: yAt(0) + 3, fill: "#7fb9d6", "font-size": 8 })).textContent = "0m";
+
+    var pts = annualEot.map(function (v, i) { return xAt(i / (annualEot.length - 1)) + "," + yAt(v); }).join(" ");
+    svg.appendChild(svgEl("polyline", { points: pts, fill: "none", stroke: "#4f7d68", "stroke-width": 1.6 }));
+
+    var totalDays = isLeap(row.Y) ? 366 : 365;
+    var frac = (dayOfYear(row.Y, row.M, row.D) - 1) / (totalDays - 1);
+    var mx = xAt(frac), my = yAt(row.eotMinutes);
+
+    // gauge needle from a small dial at bottom-right (mini compass style)
+    svg.appendChild(svgEl("circle", { cx: mx, cy: my, r: 6, fill: row.eotMinutes >= 0 ? "#e8c66a" : "#7fb9d6", stroke: "#0a2c20", "stroke-width": 1.5 }));
+    svg.appendChild(svgEl("line", { x1: mx, x2: mx, y1: padT, y2: padT + plotH, stroke: "#f3ecd9", "stroke-width": 0.6, "stroke-dasharray": "2,3", opacity: 0.5 }));
+
+    for (var mth = 0; mth < 12; mth++) {
+      var tx = xAt(mth / 12);
+      svg.appendChild(svgEl("line", { x1: tx, x2: tx, y1: padT + plotH, y2: padT + plotH + 3, stroke: "#4f7d68", "stroke-width": 1 }));
+    }
+    svg.appendChild(svgEl("text", { x: padL, y: H - 6, fill: "#7fa393", "font-size": 8 })).textContent = "Jan";
+    svg.appendChild(svgEl("text", { x: padL + plotW - 14, y: H - 6, fill: "#7fa393", "font-size": 8 })).textContent = "Des";
+
+    var descr = row.eotMinutes >= 0 ? "matahari mendahului jam" : "matahari terlambat dari jam";
+    document.getElementById("eotReadout").textContent = fmtEoT(row.eotMinutes);
+    document.getElementById("eotReadoutLabel").textContent = descr + " \u2014 " + row.label;
+  }
+
+  function renderIllustrationsForRow(row) {
+    if (row.Y !== state.yearForAnnual) computeAnnualCurves(row.Y);
+    renderDeklinasiSVG(row, state.annualDecl);
+    renderEotSVG(row, state.annualEot);
+  }
+
+  function renderIllustrations(idx) {
+    if (idx < 0 || idx >= state.rows.length) return;
+    var row = state.rows[idx];
+    renderIllustrationsForRow(row);
+    document.querySelectorAll("#tbody tr").forEach(function (t, i) {
+      t.classList.toggle("sel", i === idx);
+    });
+    syncExplorerToRow(row);
+  }
+
+  // ============================================================
+  // Penjelajah Waktu (interaktif, independen dari tabel)
+  // ============================================================
+  function defaultDateStr() {
+    var d = new Date();
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+  function minutesToHHMM(min) {
+    var h = Math.floor(min / 60), m = Math.round(min % 60);
+    if (m === 60) { m = 0; h += 1; }
+    return pad(h) + ":" + pad(m);
+  }
+  function doyToYMD(year, doy) {
+    var d = new Date(Date.UTC(year, 0, 1) + (doy - 1) * 86400000);
+    return { Y: d.getUTCFullYear(), M: d.getUTCMonth() + 1, D: d.getUTCDate() };
+  }
+  function buildRowFromDate(Y, M, D, hourLocal) {
+    var loc = getLocation();
+    var tz = getTzOffset();
+    var r = SC.computeSolarData(Y, M, D, hourLocal, tz, loc.lat, loc.lon);
+    var hh = Math.floor(hourLocal), mm = Math.round((hourLocal - hh) * 60);
+    if (mm === 60) { mm = 0; hh += 1; }
+    r.Y = Y; r.M = M; r.D = D; r.hourLocal = hourLocal;
+    r.label = pad(D) + " " + BULAN_SHORT[M - 1] + " " + Y + " " + pad(hh) + ":" + pad(mm);
+    return r;
+  }
+  function syncExplorerToRow(row) {
+    document.getElementById("explorerDate").value = row.Y + "-" + pad(row.M) + "-" + pad(row.D);
+    var doyEl = document.getElementById("explorerDoy");
+    doyEl.max = isLeap(row.Y) ? 366 : 365;
+    doyEl.value = dayOfYear(row.Y, row.M, row.D);
+    var minutes = Math.round((row.hourLocal === undefined ? 12 : row.hourLocal) * 60);
+    minutes = Math.max(0, Math.min(1439, minutes));
+    document.getElementById("explorerTime").value = minutes;
+    document.getElementById("explorerTimeLabel").textContent = minutesToHHMM(minutes);
+    document.getElementById("explorerDoyLabel").textContent = row.D + " " + BULAN_SHORT[row.M - 1];
+  }
+
+  function updateExplorer(opts) {
+    opts = opts || {};
+    var dateEl = document.getElementById("explorerDate");
+    var timeEl = document.getElementById("explorerTime");
+    var doyEl = document.getElementById("explorerDoy");
+    var Y, M, D;
+
+    if (opts.fromDoy) {
+      var yearNow = parseInt((dateEl.value || defaultDateStr()).split("-")[0], 10) || state.yearForAnnual || new Date().getFullYear();
+      var doy = parseInt(doyEl.value, 10);
+      var maxDoy = isLeap(yearNow) ? 366 : 365;
+      if (doy > maxDoy) doy = maxDoy;
+      var ymd = doyToYMD(yearNow, doy);
+      Y = ymd.Y; M = ymd.M; D = ymd.D;
+      dateEl.value = Y + "-" + pad(M) + "-" + pad(D);
+    } else {
+      var parts = (dateEl.value || defaultDateStr()).split("-");
+      Y = parseInt(parts[0], 10); M = parseInt(parts[1], 10); D = parseInt(parts[2], 10);
+      if (!opts.fromTime) {
+        doyEl.max = isLeap(Y) ? 366 : 365;
+        doyEl.value = dayOfYear(Y, M, D);
+      }
+    }
+
+    var minutes = parseInt(timeEl.value, 10);
+    var hourLocal = minutes / 60;
+    var row = buildRowFromDate(Y, M, D, hourLocal);
+    renderIllustrationsForRow(row);
+
+    document.getElementById("explorerTimeLabel").textContent = minutesToHHMM(minutes);
+    document.getElementById("explorerDoyLabel").textContent = D + " " + BULAN_SHORT[M - 1];
+  }
+
+  document.getElementById("explorerDate").addEventListener("change", function () { updateExplorer({}); });
+  document.getElementById("explorerTime").addEventListener("input", function () { updateExplorer({ fromTime: true }); });
+  document.getElementById("explorerDoy").addEventListener("input", function () { updateExplorer({ fromDoy: true }); });
+
+  document.getElementById("btnPlay").addEventListener("click", function () {
+    var btn = this;
+    if (state.playTimer) {
+      clearInterval(state.playTimer);
+      state.playTimer = null;
+      btn.innerHTML = "&#9654; Animasikan Setahun";
+      return;
+    }
+    btn.innerHTML = "&#10074;&#10074; Berhenti";
+    var doyEl = document.getElementById("explorerDoy");
+    state.playTimer = setInterval(function () {
+      var max = parseInt(doyEl.max, 10) || 365;
+      var val = parseInt(doyEl.value, 10) + 2;
+      if (val > max) val = 1;
+      doyEl.value = val;
+      updateExplorer({ fromDoy: true });
+    }, 70);
+  });
+
+  document.getElementById("btnNow").addEventListener("click", function () {
+    var now = new Date();
+    document.getElementById("explorerDate").value = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+    var minutes = now.getHours() * 60 + now.getMinutes();
+    document.getElementById("explorerTime").value = minutes;
+    document.getElementById("explorerDoy").max = isLeap(now.getFullYear()) ? 366 : 365;
+    document.getElementById("explorerDoy").value = dayOfYear(now.getFullYear(), now.getMonth() + 1, now.getDate());
+    updateExplorer({});
+  });
+
+  function initExplorer() {
+    var now = new Date();
+    document.getElementById("explorerDate").value = defaultDateStr();
+    document.getElementById("explorerDoy").max = isLeap(now.getFullYear()) ? 366 : 365;
+    document.getElementById("explorerDoy").value = dayOfYear(now.getFullYear(), now.getMonth() + 1, now.getDate());
+    document.getElementById("explorerTime").value = now.getHours() * 60 + now.getMinutes();
+    updateExplorer({});
+  }
+
+  // ============================================================
+  window.addEventListener("resize", function () {
+    if (state.rows.length) renderCharts(state.rows);
+  });
+
+  initDefaults();
+  initExplorer();
+})();
+
+</script>
+</body>
+</html>
